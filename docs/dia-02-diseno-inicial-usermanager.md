@@ -38,3 +38,13 @@ http://localhost:3000
 }
 ```
 ![[funcionamiento-api.png]]
+
+## Explicación personal
+¿Qué hace el archivo src/server.ts? Ejecutar la lógica de negocio y comunicarse con el cliente a través de respuestas http.
+¿Qué hace app.listen? Abre los puertos y mantiene al servidor a la espera de recibir peticiones http. (Hilo bloqueado esperando eventos).
+¿Qué hace app.get? Es como un switch, ejecuta una petición http del tipo en este caso get siempre que la petición del cliente coincida con la respuesta tipo string del parámetro del método. (Socket).
+¿Por qué usamos express.json? Convierte el JSON que llega en el cuerpo de una petición en un objeto manejable.
+
+## Errores detectados
+- ERROR: Unexpected ",": Faltaba especificicar el nombre de la ruta en el parámetro del método `app.get`.
+-  404 Not Found: Al poner un parámetro que no es de tipo string en el `app.get` no aparece al acceder desde el cliente.
