@@ -1,0 +1,74 @@
+## Descripción
+UserManager es una API REST para manipular usuarios de una aplicación.
+Permitirá:
+- Registrar usuarios.
+- Iniciar sesión.
+- Consultar perfiles.
+- Modificar datos.
+- Gestionar roles.
+- Proteger rutas privadas con autenticación.
+
+## Recursos principales
+- /auth: Registrarse / Iniciar sesión.
+- /users: Consultar, crear, modificar y eliminar usuarios.
+- health: Comprobar funcionamiento API.
+
+## Modelo de usuario
+User
+- id: PK.
+- name: Nombre completo.
+- email: Correo electrónico.
+- passwordHash: Contraseña.
+- role: Rol (USER / ADMIN).
+- isActive: Estado en el servidor (ACTIVO / INACTIVO).
+- createdAt: Fecha creación.
+- updatedAt: Fecha última modificación.
+
+## Endpoints
+| Método   | Ruta                     | Descripción                    | Acceso                   |
+| -------- | ------------------------ | ------------------------------ | ------------------------ |
+| `GET`    | `/api/health`            | Comprueba si la API funciona   | Público                  |
+| `POST`   | `/api/auth/register`     | Registra un usuario            | Público                  |
+| `POST`   | `/api/auth/login`        | Inicia sesión                  | Público                  |
+| `GET`    | `/api/users/me`          | Consulta mi perfil             | Usuario autenticado      |
+| `GET`    | `/api/users`             | Lista todos los usuarios       | `ADMIN`                  |
+| `GET`    | `/api/users/:id`         | Consulta un usuario por ID     | `ADMIN` o propio usuario |
+| `PATCH`  | `/api/users/:id`         | Modifica un usuario            | `ADMIN` o propio usuario |
+| `DELETE` | `/api/users/:id`         | Elimina o desactiva un usuario | `ADMIN`                  |
+| `PATCH`  | `/api/users/me/password` | Cambia mi contraseña           | Usuario autenticado      |
+| `PATCH`  | `/api/users/:id/role`    | Cambia el rol de un usuario    | `ADMIN`                  |
+| `PATCH`  | `/api/users/:id/status`  | Activa o desactiva un usuario  | `ADMIN`                  |
+
+## Flujo general
+![[flujo-api.png]]
+
+El cliente envía una petición a la API. La API valida los datos, aplica la
+lógica necesaria, consulta o modifica la base de datos y devuelve una respuesta.
+
+## Reglas iniciales
+- El email no se puede repetir.
+- La contraseña no se guarda en texto plano.
+- La API nunca devuelve passwordHash.
+- Un USER solo puede acceder a su propia información.
+- Un ADMIN puede gestionar usuarios.
+- Un usuario inactivo no puede iniciar sesión.
+
+### Reglas propuestas
+- La contraseña debe tener al menos una minúscula, una mayúscula, un número y un carácter especial.
+- La Api debe soportar 2FA para usuarios que deseen más seguridad.
+
+## Posibles errores
+- Intentar iniciar sesión con los datos de un usuario ya activo.
+- Intentar realizar una acción sin el rol correspondiente.
+
+## Respuesta Json
+{
+  "id": 2,
+  "name": "Vicente Serrano",
+  "email": "vicentess433@gmail.com",
+  "role": "ADMIN",
+  "isActive": false
+}
+
+## Descripción propia de API
+Una API es una aplicación que hace de puente entre la comunicación del cliente (frontend) y el servidor (backend), con el fin de crear, modificar, borrar u obtener datos. Garantizando una capa extra de seguridad.
