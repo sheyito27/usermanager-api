@@ -48,3 +48,4 @@ http://localhost:3000
 ## Errores detectados
 - ERROR: Unexpected ",": Faltaba especificicar el nombre de la ruta en el parámetro del método `app.get`.
 -  404 Not Found: Al poner un parámetro que no es de tipo string en el `app.get` no aparece al acceder desde el cliente.
+- He probado en dejar un string vacío pero ha funcionado correctamente. He investigado y es porque express utiliza "/" como valor por defecto cuando la cadena está vacía pero por convención se utiliza "/".
