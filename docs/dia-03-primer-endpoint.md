@@ -27,4 +27,18 @@ GET /api/health
 
 ## Explicación personal
 
-El endpont api/health/ sirve para comprobar el estado en el que se encuentra la API para garantizar su funcionamiento.
+El endpont `api/health/` sirve para comprobar el estado en el que se encuentra la API para garantizar su funcionamiento.
+
+## Comparación de rutas
+|Ruta|Método|Para qué sirve|
+|---|---|---|
+|`/`|`GET`|Mensaje inicial de la API|
+|`/api/health`|`GET`|Comprobar el estado de la API|
+|`/api/ping`|`GET`|Comprobar respuesta rápida del servidor|
+
+## Pruebas realizadas
+Petición 	Código esperado 	Resultado obtenido
+GET / 	200 	
+GET /api/health 	200 	
+GET /api/ping 	200 	
+
