@@ -46,7 +46,17 @@ Respuesta esperada:
 }
 ```
 
+### Ping
+```http
+GET /api/ping
+```
+Respuesta esperada:
 
+```json
+{
+    "message": "pong"
+}
+```
 ## Documentación
 
 - [Día 1 - Diseño inicial](docs/dia-01-diseno-inicial.md)
