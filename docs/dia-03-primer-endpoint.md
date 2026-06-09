@@ -37,8 +37,8 @@ El endpont `api/health/` sirve para comprobar el estado en el que se encuentra l
 |`/api/ping`|`GET`|Comprobar respuesta rápida del servidor|
 
 ## Pruebas realizadas
-Petición 	Código esperado 	Resultado obtenido
-GET / 	200 	
-GET /api/health 	200 	
-GET /api/ping 	200 	
-
+|Petición|Código esperado|Resultado obtenido|
+|---|---|---|
+|`GET /`|200||
+|`GET /api/health`|200||
+|`GET /api/ping`|200||
