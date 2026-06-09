@@ -5,7 +5,7 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// GET Ruta "/"
+// Ruta por defecto
 app.get("/", (req, res) => {
   res.json({
   "name": "UserManager API",
@@ -15,13 +15,19 @@ app.get("/", (req, res) => {
   });
 });
 
-// GET Ruta "/api/info"
-app.get("/api/info", (req, res) =>{
+// Ruta para comprobar el funcionamiento de la API
+app.get("/api/health", (req, res) =>{
   res.json({
-    "project": "UserManager API",
-    "description": "API REST para gestionar usuarios",
-    "day": 2,
-    "technologies": ["Node.js", "Express", "TypeScript"]
+    "status": "ok",
+    "message": "UserManager API funcionando",
+    "timestamp": new Date().toISOString()
+  })
+});
+
+// Ruta para comprobar respuesta rápida del servidor
+app.get("/api/ping", (req, res) =>{
+  res.json({
+    "message": "pong"
   })
 });
 
