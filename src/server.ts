@@ -56,7 +56,7 @@ app.post("/api/users", (req, res) => {
   res.status(201).json({
     "message": "Usuario recibido para crear",
     "data": userData
-  });
+  }); 
 });
 
 
@@ -105,7 +105,76 @@ app.patch("/api/users/:id/role", (req, res) => {
 });
 });
 
+// Ruta para comprobar que se reciba el body
+app.post("/api/debug/body", (req, res) => {
+  res.status(200).json({
+    "message": "Body recibido correctamente",
+    "body": req.body
+  });
+});
 
+// Ruta para probar route params
+app.get("/api/debug/params/:id", (req, res) => {
+  res.status(200).json({
+    "message": "Params recibidos correctamente",
+    "params": req.params
+  });
+});
+
+// Ruta para probar query params
+app.get("/api/debug/query", (req, res) => {
+  res.status(200).json({
+    "message": "Query params recibidos correctamente",
+    "query": req.query
+  });
+});
+
+// Ruta para probar headers
+app.get("/api/debug/headers", (req, res) => {
+  res.status(200).json({
+    "message": "Headers recibidos correctamente",
+    "headers": req.headers
+  });
+});
+
+// Ruta combinada
+app.patch("/api/debug/users/:id", (req, res) => {
+  const { id } = req.params;
+  const { notify } = req.query;
+  const authorization = req.headers.authorization;
+  const changes = req.body;
+
+  res.status(200).json({
+    "message": "Datos combinados recibidos",
+    id,
+    notify,
+    authorization,
+    changes
+  });
+});
+
+// Ruta para buscar un usuario simulado
+app.get("/api/user/search", (req, res) => {
+  res.status(200).json({
+    "message": "Búsqueda de usuarios",
+    "filters": req.query
+  });
+});
+
+// Ruta de simulación de cambio de contraseña
+app.patch("/api/users/me/password", (req, res) => {
+
+  res.status(200).json({
+     "message": "Solicitud de cambio de contraseña recibida"
+  });
+});
+
+// Ruta para leer un header simulado
+app.get("/api/debug/client", (req, res) => {
+  res.status(200).json({
+    "client": req.headers["x-client-name"]
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
