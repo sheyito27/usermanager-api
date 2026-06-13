@@ -52,6 +52,7 @@ app.get("/api/users/:id", (req, res) => {
 // Ruta para crear usuarios
 app.post("/api/users", (req, res) => {
   const userData = req.body;
+  console.log("Body recibido en POST /api/users:", userData);
 
   res.status(201).json({
     "message": "Usuario recibido para crear",
@@ -100,8 +101,8 @@ app.patch("/api/users/:id/role", (req, res) => {
 
   res.status(200).json({
   "message": "Rol de usuario recibido para actualizar",
-  "id": "1",
-  "role": "ADMIN"
+  "id": id,
+  "role": role
 });
 });
 
@@ -175,6 +176,37 @@ app.get("/api/debug/client", (req, res) => {
     "client": req.headers["x-client-name"]
   });
 });
+
+// Ruta temporal de depuración
+app.post("/api/debug/request", (req, res) => {
+  res.status(200).json({
+    message: "Información completa de la petición",
+    method: req.method,
+    path: req.path,
+    params: req.params,
+    query: req.query,
+    headers: req.headers,
+    body: req.body
+  });
+});
+
+// Ruta con header personalizado
+app.post("/api/debug/custom", (req, res) => {
+  res.status(200).json({
+    "message": "Headers recibidos correctamente",
+    "headers": req.headers["x-student-name: tu-nombre"]
+  });
+});
+
+// Ruta prueba actualización completa
+app.patch("/api/debug/actualizar/:id", (req, res) => {
+  res.status(200).json({
+    "response": "Usuario Modificado",
+    "email": req.body,
+    "isActive": req.params
+  })
+})
+
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
