@@ -108,11 +108,19 @@ app.get("/api/users", (req, res) => {
 
 // Ruta para obtener usuario por id
 app.get("/api/users/:id", (req, res) => {
-  const { id } = req.params;
+  const id = Number(req.params.id);
+
+  if (Number.isNaN(id)) {
+    return res.status(400).json({
+      error: "El ID debe ser un número"
+    });
+  }
+
+  const user = users.find((user) => user.id === id);
 
   res.status(200).json({
-    "message": "Detalle de usuario",
-    "id": id
+    message: "Usuario encontrado",
+    data: user
   });
 });
 
@@ -274,6 +282,9 @@ app.patch("/api/debug/actualizar/:id", (req, res) => {
   })
 })
 
+app.get("/test", (req, res) => {
+  res.send("¡El servidor está vivo!");
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
