@@ -34,22 +34,6 @@ app.get("/api/ping", (req, res) =>{
   })
 });
 
-// Ruta para obtener total de usuarios
-app.get("/api/users/count", (req, res) => {
-  res.status(200).json({
-    total: users.length,
-  });
-});
-
-// Ruta para obtener usuarios
-app.get("/api/users", (req, res) => {
-  res.status(200).json({
-    message: "Listado de usuarios",
-    total: users.length,
-    data: users
-  });
-});
-
 // Ruta para obtener usuario por id
 app.get("/api/users/:id", (req, res) => {
   const id = Number(req.params.id);
