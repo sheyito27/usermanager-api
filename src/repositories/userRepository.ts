@@ -6,5 +6,5 @@ export const baseRepository = createRepository<User>(users);
 export const userRepository = {
     ...baseRepository,
     countAll: () => baseRepository.findAll().length,
-};
+};  
 
