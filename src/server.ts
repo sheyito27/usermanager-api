@@ -1,70 +1,14 @@
 import express from "express";
+import { users } from "./data/mockData";
 
 const app = express();
 const PORT = 3000;
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  role: "USER" | "ADMIN";
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-// Datos temporales en memoria
-const users: User[] = [
-  {
-    id: 1,
-    name: "Lluis Valenzuela",
-    email: "lluis@email.com",
-    role: "USER",
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 2,
-    name: "Daniel Rico",
-    email: "daniel@email.com",
-    role: "ADMIN",
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: 3,
-    name: "Mauricio José Toro",
-    email: "mauricio@email.com",
-    role: "USER",
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-   id: 4,
-    name: "Gerard Subirana",
-    email: "gerard@email.com",
-    role: "USER",
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-   id: 5,
-    name: "Ivan Corcelles",
-    email: "ivan@email.com",
-    role: "USER",
-    isActive: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
 
 app.use(express.json());
 
-// Ruta por defecto
+// Funcionamiento api
+/// Ruta por defecto
 app.get("/", (req, res) => {
   res.json({
   "name": "UserManager API",
@@ -74,7 +18,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// Ruta para comprobar el funcionamiento de la API
+/// Ruta para comprobar el funcionamiento de la API
 app.get("/api/health", (req, res) =>{
   res.json({
     "status": "ok",
@@ -83,7 +27,7 @@ app.get("/api/health", (req, res) =>{
   })
 });
 
-// Ruta para comprobar respuesta rápida del servidor
+/// Ruta para comprobar respuesta rápida del servidor
 app.get("/api/ping", (req, res) =>{
   res.json({
     "message": "pong"
