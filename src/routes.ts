@@ -15,4 +15,4 @@ userRouter.patch("/:id/role", userController.updateUserRole);
 userRouter.delete("/:id", userController.deleteUser);
 
 // --- Endpoints de Debug ---
-mainRouter.post("/health", mainController.getStatusApi);
+mainRouter.get("/health", mainController.getStatusApi);
