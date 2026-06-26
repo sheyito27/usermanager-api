@@ -1,15 +1,7 @@
-import express from "express";
-import { users } from "./data/mockData";
-import { userRouter, mainRouter } from './routes';
+import { app } from "./app";
+import { Express } from "express";
 
-const app = express();
-const PORT = 3000;
-
-
-app.use(express.json());
-
-app.use('/users', userRouter); 
-app.use('/api', mainRouter);
+const PORT = 3000
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
