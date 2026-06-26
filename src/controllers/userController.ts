@@ -54,7 +54,6 @@ export const updateUser = (req: Request, res: Response) => {
     "changes": changedUser
   });
 };
-
 // Cambiar rol de un usuario en concreto
 export const updateUserRole = (req: Request, res: Response) => {
   const id = Number(req.params.id);
@@ -82,5 +81,6 @@ export const updateUserRole = (req: Request, res: Response) => {
         data: deletedUser
     });
 };
+
 
 
