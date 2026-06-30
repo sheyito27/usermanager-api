@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { userRepository } from '../repositories/userRepository.js';
+import { CreateUserSchema } from '../schemas/userSchema.js';
 
 // Obtener la cantidad de usuarios
 export const getUserCount = (req: Request, res: Response) => {
@@ -34,13 +35,39 @@ export const getUserById = (req: Request, res: Response) => {
 
 // Ruta para crear usuarios
 export const createUser = (req: Request, res: Response) => {
-  const userToAdd = req.body;
-  const addedUser = userRepository.addOne(userToAdd);
-  res.status(201).json({
-    "message": "Usuario recibido para crear",
-    "data": addedUser
-  }); 
-};
+  const result = CreateUserSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({ errors: result.error.format() });
+  }
+
+  const { name, email, password } = result.data;
+  const userList =userRepository.findAll();
+  if (userList.find(u => u.email == email)) {
+    return res.status(409).json({ error: "El email ya está registrado" });
+  }
+
+  const newId = userList.length > 0
+  ? Math.max(...userList.map((user) => user.id)) + 1
+  : 1;
+
+  const newUser = {
+    id: newId,
+    name,
+    email,
+    password,
+    role: 'USER' as 'USER',
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+
+  const addedUser = userRepository.addOne(newUser);
+
+  return res.status(201).json({
+    message: "Usuario creado exitosamente",
+    user: addedUser
+  });
+}
 
 // Cambiar datos de un usuario en concreto
 export const updateUser = (req: Request, res: Response) => {
@@ -81,6 +108,3 @@ export const updateUserRole = (req: Request, res: Response) => {
         data: deletedUser
     });
 };
-
-
-

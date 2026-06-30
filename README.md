@@ -111,6 +111,57 @@ Posibles errores:
 }
 ```
 
+## Crear usuario
+
+```http
+POST /api/users
+```
+
+Body:
+
+```json
+{
+  "name": "María López",
+  "email": "maria@email.com",
+  "password": "123456"
+}
+```
+
+Respuesta correcta:
+
+```json
+{
+  "message": "Usuario creado correctamente",
+  "data": {
+    "id": 4,
+    "name": "María López",
+    "email": "maria@email.com",
+    "role": "USER",
+    "isActive": true
+  }
+}
+```
+
+Posibles errores:
+
+```json
+{
+  "error": "name, email y password son obligatorios"
+}
+```
+
+```json
+{
+  "error": "La contraseña debe tener al menos 6 caracteres"
+}
+```
+
+```json
+{
+  "error": "El email ya está registrado"
+}
+```
+
 ## Documentación
 
 - [Día 1 - Diseño inicial](docs/dia-01-diseno-inicial.md)
@@ -121,3 +172,4 @@ Posibles errores:
 - [Día 6 - Cliente HTTP y depuración](docs/dia-06-cliente-http-depuracion.md)
 - [Día 7 - Listado de usuarios en memoria](docs/dia-07-listado-usuarios.md)
 - [Día 8 - Consultar usuario por ID](docs/dia-08-consultar-usuario-id.md)
+- [Día 9 - Crear usuarios en memoria](docs/dia-09-crear-usuarios.md)
