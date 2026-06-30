@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userRepository } from '../repositories/userRepository.js';
-import { CreateUserSchema } from '../schemas/userSchema.js';
+import { CreateUserSchema, UpdateUserSchema, UserIdSchema} from '../schemas/userSchema.js';
 
 // Obtener la cantidad de usuarios
 export const getUserCount = (req: Request, res: Response) => {
@@ -41,13 +41,13 @@ export const createUser = (req: Request, res: Response) => {
   }
 
   const { name, email, password } = result.data;
-  const userList =userRepository.findAll();
-  if (userList.find(u => u.email == email)) {
+  const users =userRepository.findAll();
+  if (users.some(u => u.email == email)) {
     return res.status(409).json({ error: "El email ya está registrado" });
   }
 
-  const newId = userList.length > 0
-  ? Math.max(...userList.map((user) => user.id)) + 1
+  const newId = users.length > 0
+  ? Math.max(...users.map((user) => user.id)) + 1
   : 1;
 
   const newUser = {
@@ -71,16 +71,58 @@ export const createUser = (req: Request, res: Response) => {
 
 // Cambiar datos de un usuario en concreto
 export const updateUser = (req: Request, res: Response) => {
-  const idParam = req.params.id;
-  const id = Number(idParam);
-  const changes = req.body;
-  const changedUser = userRepository.updateOne(id, changes);
+  const idResult = UserIdSchema.safeParse(req.params);
+  if (!idResult.success) {
+    return res.status(400).json({
+      error: "ID inválido",
+      details: idResult.error.format()
+     });
+  }
+  const id = idResult.data.id;
 
-  res.status(200).json({
-    "message": "Usuario recibido para actualizar",
-    "changes": changedUser
+  const result = UpdateUserSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({
+       error: "Datos inválidos",
+       details: result.error.format()
+      });
+  }
+
+  if (Object.keys(result.data).length === 0) {
+    return res.status(400).json({
+    error: "Debes enviar al menos un campo para actualizar"
+    });
+  };
+
+   const users = userRepository.findAll()
+  const { email, isActive, name } = result.data;
+  if (email) {
+    const emailExists = users.some(u => u.email === email && u.id !== id);
+    if (emailExists) return res.status(409).json({ error: "Email ya registrado" });
+  }
+  
+  const userToUpdate = userRepository.updateOne(id, result.data)
+  if (!userToUpdate) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
+
+  const updatedUser = {
+    ...userToUpdate,
+    name,
+    email,
+    isActive,
+    updatedAt: new Date().toISOString()
+};
+
+  return res.status(200).json({
+    message: "Usuario actualizado exitosamente",
+    user: updatedUser
   });
 };
+
+
+
+
 // Cambiar rol de un usuario en concreto
 export const updateUserRole = (req: Request, res: Response) => {
   const id = Number(req.params.id);
